@@ -4,41 +4,53 @@
 #include <ecl/ecl.h>
 
 int main(int argc, char* argv[]) {
-    // Initialize ECL
     cl_boot(argc, argv);
-    
-    // Setup cleanup on exit
     atexit(cl_shutdown);
-    
-    char input[1024];
+#define INPUT_SIZE 1024
+    char input[INPUT_SIZE];
+    int cursor = 0;
     cl_object result;
-    
-    printf("ECL REPL (type :quit to exit)\n");
-    
-    while (1) {
-        printf("ecl> ");
-        if (fgets(input, sizeof(input), stdin) == NULL) {
-            break;
+    printf("$ ");
+    for (;;) {
+        int c = 0;
+        while (c != EOF && c != '\n') {
+            if (cursor >= INPUT_SIZE)
+                cursor = INPUT_SIZE - 1;
+            switch ((c = getchar())) {
+                case EOF:
+                case '\n':
+                    input[cursor] = '\0';
+                    break;
+                default:
+                    input[cursor++] = c;
+                    if (cursor >= INPUT_SIZE) {
+                        input[cursor-1] = '\0';
+                        c = EOF;
+                    }
+                    break;
+            }
         }
+        if (!cursor)
+            goto BAIL;
+        int anything = 0;
+        for (const char *p = input; *p; p++)
+            if (*p != ' ') {
+                anything = 1;
+                break;
+            }
+        if (!anything)
+            goto BAIL;
         
-        // Check for quit command
-        if (strcmp(input, ":quit\n") == 0) {
+        if (!strcmp(input, ":quit"))
             break;
-        }
-        
-        // Create a Lisp string from the input
-        cl_object form_string = c_string_to_object(input);
-        
-        // Read the string as a Lisp form
-        cl_object form = cl_read_from_string(1, form_string);
-        
-        // Evaluate the form
+        cl_object form = c_string_to_object((const char*)input);
         result = cl_eval(form);
-        
-        // Print the result
         cl_print(1, result);
         printf("\n");
+    BAIL:
+        memset(input, 0, INPUT_SIZE * sizeof(char));
+        cursor = 0;
+        printf("$ ");
     }
-    
     return 0;
 }

@@ -1,11 +1,13 @@
 BUILDDIR=build
 
+default: turtle
+
 builddir: $(BUILDIR)
 	mkdir -p $(BUILDDIR)
 
 ecl:
 	cd deps/ecl; \
-	./configure ecldir="$(BUILDDIR)" \
+	./configure \
 		    --with-tcp \
 		    --with-clos-streams \
 		    --with-asdf \
@@ -20,5 +22,3 @@ turtle:
 	clang src/main.c -I$(BUILDDIR) -rpath $(BUILDDIR) -L$(BUILDDIR) -lecl -o $(BUILDDIR)/turtle
 
 all: builddir ecl turtle
-
-default: turtle

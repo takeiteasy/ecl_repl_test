@@ -1,0 +1,3 @@
+[submodule "deps/ecl"]
+	path = deps/ecl
+	url = https://gitlab.com/embeddable-common-lisp/ecl.git

@@ -1,0 +1,30 @@
+name: turtle
+
+options:
+  bundleIdPrefix: io.github.takeiteasy
+  createIntermediateGroups: true
+  deploymentTarget:
+    macOS: "15.0"
+
+settings:
+  GCC_C_LANGUAGE_STANDARD: c11
+  CLANG_WARN_DOCUMENTATION_COMMENTS: false
+
+targets:
+  turtle:
+    type: tool
+    platform: macOS
+    sources:
+      - path: src/
+      - path: Makefile
+        type: folder
+      - path: README.md
+        type: folder
+      - path: project.yml
+        type: folder
+    dependencies:
+      - framework: build/libecl.24.5.10.dylib
+    settings:
+      LD_RUNPATH_SEARCH_PATHS: [$(PROJECT_DIR)/build]
+      LIBRARY_SEARCH_PATHS: [$(PROJECT_DIR)/build]
+      HEADER_SEARCH_PATHS: [$(PROJECT_DIR)/build]

@@ -1,4 +1,4 @@
 ;;;; package.lisp
 
-(defpackage #:turtle
+(defpackage #:test-project
   (:use #:cl))

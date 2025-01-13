@@ -1,4 +1,4 @@
-name: turtle
+name: ecl
 
 options:
   bundleIdPrefix: io.github.takeiteasy
@@ -11,7 +11,7 @@ settings:
   CLANG_WARN_DOCUMENTATION_COMMENTS: false
 
 targets:
-  turtle:
+  ecl:
     type: tool
     platform: macOS
     sources:

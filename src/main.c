@@ -18,7 +18,7 @@ static void restore_stdout(int original_stdout) {
     close(original_stdout);
 }
 
-#ifdef SILENCE_TURTLE
+#ifdef SILENCE_EVAL
 #define CL_EVAL(...) \
     do { \
         int o = mute_stdout(); \
@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
     
     cl_object result;
     CL_EVAL(c_string_to_object("(require 'asdf)"));
-    CL_EVAL(c_string_to_object("(load \"turtle.asd\")"));
+    CL_EVAL(c_string_to_object("(load \"test-project.asd\")"));
 
 #define INPUT_SIZE 1024
     char input[INPUT_SIZE];
